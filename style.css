@@ -4,6 +4,23 @@
 #parallaxTop{
   height: 200px;
 }
+#tagLine{
+  font-family:"Lucida Console", Monaco, monospace;
+  font-size:15px;
+  font-weight:bolder;
+  line-height:normal;
+}
 .radioP{
   display: inline-block;
+}
+#loading{
+  font-family:"Lucida Console", Monaco, monospace;
+  font-size:50px;
+  font-weight:bold;
+  line-height:normal;
+  text-align:center;
+}
+.graphCard{
+  height:500px;
+  /*width:100%;*/
 }
