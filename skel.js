@@ -1,8 +1,11 @@
 $(document).ready(function(){
   'use strict';
   $('.parallax').parallax();
+  $('select').material_select();
 
   var numPlayer;
+  var params = {};
+  var statArr = [];
 
   var numPlayerDiv = $('#numPlayerRadio input');
   numPlayerDiv.on('change',function(){
@@ -27,11 +30,14 @@ $(document).ready(function(){
   });
 
 $('#buttonDiv').on('click', '#submitPlayers', function(){
+    //getPlayerID();
+    //consider using fs to write files from api, make id:player index, make drop-downs for teams/players
   $('select').material_select();
 
-    //getPlayerID();
   console.log('click button');
-  $('#userField').html(`<form action="#">
+  $('#userField').html(`
+
+    <form action="#">
       <p class="range-field" id="season">
         <label class="active" for="seasonSlider">Season</label>
         <input type="range" id="seasonSlider" min="2010" max="2016" />
@@ -48,28 +54,64 @@ $('#buttonDiv').on('click', '#submitPlayers', function(){
       </p>
 
       <div class="col s4">
-        <input type="checkbox" class="filled-in" id="filled-in-box1" />
+        <input type="checkbox" class="filled-in stat" id="filled-in-box1" value="RushingAttempts" />
         <label for="filled-in-box1">Rush Attempts</label>
-        <input type="checkbox" class="filled-in" id="filled-in-box2" />
+
+        <input type="checkbox" class="filled-in stat" id="filled-in-box2" value="RushingYards" />
         <label for="filled-in-box2">Rush Yards</label>
       </div>
+
       <div class="col s4">
-      <input type="checkbox" class="filled-in" id="filled-in-box3" />
+      <input type="checkbox" class="filled-in stat" id="filled-in-box3" value="Receptions" />
       <label for="filled-in-box3">Receptions</label>
-      <input type="checkbox" class="filled-in" id="filled-in-box3" />
-      <label for="filled-in-box3">Reception Yards</label>
+
+      <input type="checkbox" class="filled-in stat" id="filled-in-box4" value="ReceivingYards" />
+      <label for="filled-in-box4">Reception Yards</label>
       </div>
+
       <div class="col s4">
-      <input type="checkbox" class="filled-in" id="filled-in-box3" />
-      <label for="filled-in-box3">Passing Attempts</label>
-      <input type="checkbox" class="filled-in" id="filled-in-box3" />
-      <label for="filled-in-box3">Passing Yards</label>
+      <input type="checkbox" class="filled-in stat" id="filled-in-box5" value="PassingAttempts" />
+      <label for="filled-in-box5">Passing Attempts</label>
+
+      <input type="checkbox" class="filled-in stat" id="filled-in-box6" value="PassingYards" />
+      <label for="filled-in-box6">Passing Yards</label>
       </div>
-    </form>`);
-  $('#buttonDiv').html(`<br><a class="waves-effect waves-light btn" id="graphButton">Graph</a>`)
+    </form>
+    `);
+
+  // use below for select dropdown
+  // $('select').material_select();
+  // $("select").empty().html(' ');
+  // var value = "New value";
+  // $("select").append(
+  //   $("<option></option>").attr("value","RushingAttempts").text("Rushing Attempts")
+  // );
+
+  // Update the content clearing the caret
+  // $("select").material_select('update');
+  // $("select").closest('.input-field').children('span.caret').remove();
+  // put below inside userField.html
+  // <div class="input-field col s12">
+  //   <select>
+  //   </select>
+  //   <label>Materialize Select</label>
+  // </div>
+
+  $('#buttonDiv').html(`<br><a class="waves-effect waves-light btn" id="graphButton">Graph</a>`);
           //<a class="waves-effect waves-light btn" id="submitPlayers">Graph</a>
   });
 
+$('#buttonDiv').on('click', '#graphButton', function(){
+  var season = parseInt($('#seasonSlider').val());
+  var weekStart = parseInt($('#week1Slider').val());
+  var weekEnd = parseInt($('#week2Slider').val());
+  statArr = $(':checkbox:checked').map(function(_, el) {
+    return $(el).val();
+  }).get();
+  // statArr = $(':checkbox:checked').val();
+  console.log('stats selected:', statArr);
+  console.log(season, weekStart, weekEnd);
+});
 
 
 
