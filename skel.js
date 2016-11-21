@@ -5,6 +5,9 @@ $(document).ready(function(){
 
   var numPlayer;
   var params = {};
+  var nameArr = [];
+  var playerObjID = {};
+  var IDArr = [];
   var statArr = [];
 
   var numPlayerDiv = $('#numPlayerRadio input');
@@ -26,13 +29,59 @@ $(document).ready(function(){
       return htmlString;
     });
     $('#buttonDiv').html(`
-      <div class="row container"><a class="waves-effect waves-light btn" id="submitPlayers">Initialize</a><div>`);
+      <p>Loading...</p>`);
+
+    getplayerIDObj();
+    function getplayerIDObj() {
+      var $playersAll = $.ajax({
+        url:"https://api.fantasydata.net/v3/nfl/stats/JSON/PlayerSeasonStats/2016",
+        //+"/"+params.week+"/"+params.team,
+        type: "GET",
+        success: function(){console.log('yeehaw');},
+        error: function(){console.log('uh oh');},
+        beforeSend: setHeader,
+        // Request body
+        data: "{}"
+      });
+      //close stats = ajax
+
+      function setHeader(xhr){
+        xhr.setRequestHeader("Ocp-Apim-Subscription-Key","a2f7e42648ea4c67b18eb8cb195d3593");
+      }
+
+      $playersAll.done(function(data) {
+        console.log("success");
+        // console.log(data);
+        for(var i=0; i<data.length; i++){
+          playerObjID[data[i].Name] = data[i].PlayerID;
+        }
+        $('#buttonDiv').html(`
+          <div class="row container"><a class="waves-effect waves-light btn" id="submitPlayers">Initialize</a><div>`);
+      });
+      $playersAll.fail(function() {
+        console.log("error");
+      });
+    }//close getplayerIDObj
+
+
   });
 
 $('#buttonDiv').on('click', '#submitPlayers', function(){
-    //getPlayerID();
-    //consider using fs to write files from api, make id:player index, make drop-downs for teams/players
-  $('select').material_select();
+  nameArr = $('.validate').map(function(_, el) {
+    return $(el).val();
+  }).get();
+  console.log('nameArr- ', nameArr);
+
+
+  for(var i=0;i<nameArr.length;i++){
+    IDArr[i] = playerObjID[nameArr[i]];
+    }
+  console.log('ids of names:', IDArr);
+
+
+  //consider using fs to write files from api, make id:player index, make drop-downs for teams/players
+
+  // $('select').material_select();
 
   console.log('click button');
   $('#userField').html(`
@@ -109,8 +158,8 @@ $('#buttonDiv').on('click', '#graphButton', function(){
     return $(el).val();
   }).get();
   // statArr = $(':checkbox:checked').val();
-  console.log('stats selected:', statArr);
   console.log(season, weekStart, weekEnd);
+  console.log('stats selected:', statArr);
 });
 
 
