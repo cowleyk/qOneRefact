@@ -52,12 +52,14 @@ $('#buttonDiv').on('click', '#graphButton', function(){
   console.log(params.season, weekStart, weekEnd);
   console.log('stats selected:', statArr);
 
-  var heightCounter = 500;
+  var heightCounter = 0;
+  $("#main").height(heightCounter);
+
   $('#main').html(``);
   for (var j=0; j<statArr.length; j++){
 
     setUpGraphs();
-    heightCounter += (400*j);
+    heightCounter += (500);
   };
 
   // Set the container height

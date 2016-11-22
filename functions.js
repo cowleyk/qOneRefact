@@ -108,9 +108,7 @@ function getplayerIDObj() {
 
   function setUpGraphs(){
     $('#main').append(`<div class="row container graphCard">
-        <div class="col s12 blue-grey darken-1">
-            <img id="graphImg" src="images/nfl.jpg">
-        </div>
+        <img id="graphImg" src="images/nfl.jpg">
       </div>
       <br>
       `)

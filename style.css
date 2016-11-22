@@ -21,10 +21,11 @@
   text-align:center;
 }
 .graphCard{
-  height:400px;
+  height:500px;
   display:block;
   margin:auto;
 }
 #graphImg{
   width:100%;
+  height:400px;
 }
