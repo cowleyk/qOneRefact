@@ -52,9 +52,25 @@ $('#buttonDiv').on('click', '#graphButton', function(){
   console.log(params.season, weekStart, weekEnd);
   console.log('stats selected:', statArr);
 
+  var heightCounter = 500;
+  $('#main').html(``);
   for (var j=0; j<statArr.length; j++){
+
     setUpGraphs();
+    heightCounter += (400*j);
   };
+
+  // Set the container height
+  console.log('heightCounter- ', heightCounter);
+  $("#main").height(heightCounter);
+
+ //  $(".container *").each(function(){
+ // // If this elements height is bigger than the biggestHeight
+ //   if ($(this).height() > biggestHeight ) {
+ //     // Set the biggestHeight to this Height
+ //     biggestHeight = $(this).height();
+ //   }
+ //  });
 
 });
 

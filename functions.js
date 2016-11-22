@@ -73,46 +73,48 @@ function getplayerIDObj() {
           <input type="range" id="week2Slider" min="0" max="16" />
         </p>
 
-        <div class="col s4 m4 l4">
-          <input type="checkbox" class="filled-in stat" id="filled-in-box1" value="RushingAttempts" />
-          <label for="filled-in-box1">Rush Attempts</label>
+        <div class="row container">
+          <div class="col s4 m4 l4">
+            <input type="checkbox" class="filled-in stat" id="filled-in-box1" value="RushingAttempts" />
+            <label for="filled-in-box1">Rush Attempts</label>
 
-          <input type="checkbox" class="filled-in stat" id="filled-in-box2" value="RushingYards" />
-          <label for="filled-in-box2">Rush Yards</label>
+            <input type="checkbox" class="filled-in stat" id="filled-in-box2" value="RushingYards" />
+            <label for="filled-in-box2">Rush Yards</label>
+          </div>
         </div>
 
-        <div class="col s4 m4 l4">
-          <input type="checkbox" class="filled-in stat" id="filled-in-box3" value="Receptions" />
-          <label for="filled-in-box3">Receptions</label>
+        <div class="row container">
+          <div class="col s4 m4 l4">
+            <input type="checkbox" class="filled-in stat" id="filled-in-box3" value="Receptions" />
+            <label for="filled-in-box3">Receptions</label>
 
-          <input type="checkbox" class="filled-in stat" id="filled-in-box4" value="ReceivingYards" />
-          <label for="filled-in-box4">Reception Yards</label>
+            <input type="checkbox" class="filled-in stat" id="filled-in-box4" value="ReceivingYards" />
+            <label for="filled-in-box4">Reception Yards</label>
+          </div>
         </div>
 
-        <div class="col s4 m4 l4">
-          <input type="checkbox" class="filled-in stat" id="filled-in-box5" value="PassingAttempts" />
-          <label for="filled-in-box5">Passing Attempts</label>
+        <div class="row container">
+          <div class="col s4 m4 l4">
+            <input type="checkbox" class="filled-in stat" id="filled-in-box5" value="PassingAttempts" />
+            <label for="filled-in-box5">Passing Attempts</label>
 
-          <input type="checkbox" class="filled-in stat" id="filled-in-box6" value="PassingYards" />
-          <label for="filled-in-box6">Passing Yards</label>
+            <input type="checkbox" class="filled-in stat" id="filled-in-box6" value="PassingYards" />
+            <label for="filled-in-box6">Passing Yards</label>
+          </div>
         </div>
       </form>
       `);
   };
 
   function setUpGraphs(){
-    $('#graphsDiv').append(`<div class="row graphCard">
-        <div class="col s12">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <img src="images/nfl.jpg">
-            </div>
-            <div class="card-action">
-            </div>
-          </div>
+    $('#main').append(`<div class="row container graphCard">
+        <div class="col s12 blue-grey darken-1">
+            <img id="graphImg" src="images/nfl.jpg">
         </div>
       </div>
+      <br>
       `)
+
   };
 
 //___________________scrapheap__________________
