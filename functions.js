@@ -2,6 +2,8 @@
 
 var numPlayer;
 var playerObjID = {};
+var apiString = 'https://api.fantasydata.net/v3/nfl/stats/JSON/';
+
 
 function setUpPlayerNames(){
   $('#userField').append(`<div id="appendTo">
@@ -19,7 +21,7 @@ function setUpPlayerNames(){
     // htmlString += `<a class="waves-effect waves-light btn" id="submitPlayers">Initialize</a>`;
     return htmlString;
   });
-};
+}
 
 function getplayerIDObj() {
   var $playersAll = $.ajax({
@@ -54,66 +56,97 @@ function getplayerIDObj() {
 
 
 
-  function setUpStats(){
-    $('#userField').html(`
+function setUpStats(){
+  $('#userField').html(`
 
-      <form action="#">
-        <p class="range-field" id="season">
-          <label class="active" for="seasonSlider">Season</label>
-          <input type="range" id="seasonSlider" min="2010" max="2016" />
-        </p>
+    <form action="#">
+      <p class="range-field" id="season">
+        <label class="active" for="seasonSlider">Season</label>
+        <input type="range" id="seasonSlider" value="2016" min="2010" max="2016" />
+      </p>
 
-        <p class="range-field" id="week1">
-          <label class="active" for="week1Slider">Week 1</label>
-          <input type="range" id="week1Slider" min="0" max="16" />
-        </p>
+      <p class="range-field" id="week1">
+        <label class="active" for="week1Slider">Week 1</label>
+        <input type="range" id="week1Slider" min="1" max="16" />
+      </p>
 
-        <p class="range-field" id="week2">
-          <label class="active" for="week2Slider">Week 2</label>
-          <input type="range" id="week2Slider" min="0" max="16" />
-        </p>
+      <p class="range-field" id="week2">
+        <label class="active" for="week2Slider">Week 2</label>
+        <input type="range" id="week2Slider" min="1" max="16" />
+      </p>
 
-        <div class="row container">
-          <div class="col s4 m4 l4">
-            <input type="checkbox" class="filled-in stat" id="filled-in-box1" value="RushingAttempts" />
-            <label for="filled-in-box1">Rush Attempts</label>
+      <div class="row container">
+        <div class="col s4 m4 l4">
+          <input type="checkbox" class="filled-in stat" id="filled-in-box1" value="RushingAttempts" />
+          <label for="filled-in-box1">Rush Attempts</label>
 
-            <input type="checkbox" class="filled-in stat" id="filled-in-box2" value="RushingYards" />
-            <label for="filled-in-box2">Rush Yards</label>
-          </div>
+          <input type="checkbox" class="filled-in stat" id="filled-in-box2" value="RushingYards" />
+          <label for="filled-in-box2">Rush Yards</label>
         </div>
-
-        <div class="row container">
-          <div class="col s4 m4 l4">
-            <input type="checkbox" class="filled-in stat" id="filled-in-box3" value="Receptions" />
-            <label for="filled-in-box3">Receptions</label>
-
-            <input type="checkbox" class="filled-in stat" id="filled-in-box4" value="ReceivingYards" />
-            <label for="filled-in-box4">Reception Yards</label>
-          </div>
-        </div>
-
-        <div class="row container">
-          <div class="col s4 m4 l4">
-            <input type="checkbox" class="filled-in stat" id="filled-in-box5" value="PassingAttempts" />
-            <label for="filled-in-box5">Passing Attempts</label>
-
-            <input type="checkbox" class="filled-in stat" id="filled-in-box6" value="PassingYards" />
-            <label for="filled-in-box6">Passing Yards</label>
-          </div>
-        </div>
-      </form>
-      `);
-  };
-
-  function setUpGraphs(){
-    $('#main').append(`<div class="row container graphCard">
-        <img id="graphImg" src="images/nfl.jpg">
       </div>
-      <br>
-      `)
 
-  };
+      <div class="row container">
+        <div class="col s4 m4 l4">
+          <input type="checkbox" class="filled-in stat" id="filled-in-box3" value="Receptions" />
+          <label for="filled-in-box3">Receptions</label>
+
+          <input type="checkbox" class="filled-in stat" id="filled-in-box4" value="ReceivingYards" />
+          <label for="filled-in-box4">Reception Yards</label>
+        </div>
+      </div>
+
+      <div class="row container">
+        <div class="col s4 m4 l4">
+          <input type="checkbox" class="filled-in stat" id="filled-in-box5" value="PassingAttempts" />
+          <label for="filled-in-box5">Passing Attempts</label>
+
+          <input type="checkbox" class="filled-in stat" id="filled-in-box6" value="PassingYards" />
+          <label for="filled-in-box6">Passing Yards</label>
+        </div>
+      </div>
+    </form>
+    `);
+}
+
+// ______________START:getWeeklyStats____________________
+function getWeeklyStats(obj){
+    var $weeklyStats =$.ajax({
+      url: apiString + obj.statType + "/" + obj.season + "/" + obj.week + "/" + obj.playerID,
+      // set range values to equal weeks in api string
+      type: "GET",
+      beforeSend: setHeader,
+      success: function(data){console.log('yeehaw2');},
+      error: function(){console.log('uh oh2');},
+
+      // Request body
+      data: "{}"
+    }); //close stats = ajax
+
+
+    function setHeader(xhr){
+      xhr.setRequestHeader("Ocp-Apim-Subscription-Key","a2f7e42648ea4c67b18eb8cb195d3593");
+    }
+
+    // $weeklyStats.done(function(data) {
+    //   console.log("success2");
+    //   console.log(data);
+    //   return data;
+    // })
+    // $weeklyStats.fail(function() {
+    //   console.log("error2");
+    // });
+  // return queryStats; //close for loop
+} //close getWeeklyStats
+
+function setUpGraphs(){
+  $('#main').append(`<div class="row container graphCard">
+      <p class="graphLabel"></p>
+      <img id="graphImg" src="images/nfl.jpg">
+    </div>
+    <br>
+    `);
+
+}
 
 //___________________scrapheap__________________
 // use below for select dropdown

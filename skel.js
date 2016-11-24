@@ -7,6 +7,9 @@ $(document).ready(function(){
   var nameArr = [];
   var IDArr = [];
   var statArr = [];
+  var apiString = 'https://api.fantasydata.net/v3/nfl/stats/JSON/';
+  var flotObj = {};
+
 
   var numPlayerDiv = $('#numPlayerRadio input');
   numPlayerDiv.on('change',function(){
@@ -38,7 +41,7 @@ $('#buttonDiv').on('click', '#submitPlayers', function(){
 
   $('#buttonDiv').html(`<br><a class="waves-effect waves-light btn" id="graphButton">Graph</a>`);
 
-  });
+});
 
 $('#buttonDiv').on('click', '#graphButton', function(){
   params.season = parseInt($('#seasonSlider').val());
@@ -52,29 +55,76 @@ $('#buttonDiv').on('click', '#graphButton', function(){
   console.log(params.season, weekStart, weekEnd);
   console.log('stats selected:', statArr);
 
-  var heightCounter = 0;
-  $("#main").height(heightCounter);
+  params.statType = 'PlayerGameStatsByPlayerID';
+  params.week = weekStart;
+  // params.playerID = IDArr[0];
 
-  $('#main').html(``);
-  for (var j=0; j<statArr.length; j++){
+  var requests = [];
+  for (let k=0; k<IDArr.length; k++){
+    params.playerID = IDArr[k];
+    for (var i=weekStart; i<weekEnd+1; i++){
+      params.week = i;
+      requests.push($.ajax({
+        url: apiString + params.statType + "/" + params.season + "/" + params.week + "/" + params.playerID,
+        // set range values to equal weeks in api string
+        type: "GET",
+        beforeSend: setHeader,
+        success: function(data){console.log('yeehaw2');},
+        error: function(){console.log('uh oh2');},
 
-    setUpGraphs();
-    heightCounter += (500);
-  };
+        // Request body
+        data: "{}"
+      }));
+      function setHeader(xhr){
+        xhr.setRequestHeader("Ocp-Apim-Subscription-Key","a2f7e42648ea4c67b18eb8cb195d3593");
+      }
+    }
+  } //close for loop of ajax requests
+  console.log('pre-promise flotObj- ', flotObj);
+  Promise.all(requests).then(function (results) {
+    console.log('results- ', results);
+    // results = [{weekStart/player1},{weekStart/player2}...,{weekEnd/player1}{weekEnd/player2}]
 
-  // Set the container height
-  console.log('heightCounter- ', heightCounter);
-  $("#main").height(heightCounter);
 
- //  $(".container *").each(function(){
- // // If this elements height is bigger than the biggestHeight
- //   if ($(this).height() > biggestHeight ) {
- //     // Set the biggestHeight to this Height
- //     biggestHeight = $(this).height();
- //   }
- //  });
+    for (var i=0; i<statArr.length; i++){
+      flotObj[statArr[i]] = {};
+      for (var j=0; j<IDArr.length; j++){
+        flotObj[statArr[i]][IDArr[j]] = [];
+      }
 
-});
+
+      for (var k=0; k<results.length; k++){
+        // ?? loop through results, use if(results[i].name ===){push to flotArr inside proper obj/key}
+        // need to sort at some point
+        for (var key in flotObj[statArr[i]]){
+          if(results[k] == ""){
+            console.log('skipped');
+          }
+          else if((results[k].PlayerID).toString() === key){
+            flotObj[statArr[i]][key].push([results[k].Week, results[k][statArr[i]]]);
+          }
+
+        }
+
+      } //close loop over results
+    } //close loop over statArr
+    console.log('flotObj- ', flotObj);
+
+    var heightCounter = 0;
+    $("#main").height(heightCounter);
+
+    $('#main').html(``);
+    for (let j=0; j<statArr.length; j++){
+      setUpGraphs();
+      heightCounter += (500);
+    }
+    // Set the container height
+    console.log('heightCounter- ', heightCounter);
+    $("#main").height(heightCounter);
+
+  }); // Close promise.all
+
+}); // Close "Graph" button
 
 
 
