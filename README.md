@@ -18,6 +18,6 @@ Surge Link: qonerefacttwo.surge.sh
 
 * not sure index.html qualifies as 'Semantic HTML'.  Would love suggestions on where to improve.
 
-* will be sure to actually use stories and document evidence of an agile workflow on the next quarter project
+* will be sure to actually use stories and document evidence of an agile workflow on the next quarter project, I did incorporate a GitHub master/feature-branch workflow during the refactor.
 
 * flot-chart graphs are not 100% formatted, plan is to eventually switch to D3 generated graphs so I'm not putzing with them any further.
