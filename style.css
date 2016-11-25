@@ -36,5 +36,8 @@
   line-height:normal;
 }
 #legendDiv{
-  height:100px;
+  height:200px;
+}
+#resetButtonDiv{
+  text-align: center;
 }

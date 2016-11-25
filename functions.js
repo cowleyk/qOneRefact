@@ -26,6 +26,8 @@ function setUpPlayerNames(){
   });
 }
 
+
+
 function getplayerIDObj() {
   var $playersAll = $.ajax({
     url:"https://api.fantasydata.net/v3/nfl/stats/JSON/PlayerSeasonStats/2016",
@@ -36,8 +38,7 @@ function getplayerIDObj() {
     beforeSend: setHeader,
     // Request body
     data: "{}"
-  });
-  //close stats = ajax
+  }); //close ajax
 
   function setHeader(xhr){
     xhr.setRequestHeader("Ocp-Apim-Subscription-Key","a2f7e42648ea4c67b18eb8cb195d3593");
@@ -45,7 +46,6 @@ function getplayerIDObj() {
 
   $playersAll.done(function(data) {
     console.log("success");
-    // console.log(data);
     for(var i=0; i<data.length; i++){
       playerObjID[data[i].Name] = data[i].PlayerID;
     }
@@ -111,11 +111,11 @@ function setUpStats(){
     `);
 }
 
-// ______________START:getWeeklyStats____________________
+
+
 function getWeeklyStats(obj){
     var $weeklyStats =$.ajax({
       url: apiString + obj.statType + "/" + obj.season + "/" + obj.week + "/" + obj.playerID,
-      // set range values to equal weeks in api string
       type: "GET",
       beforeSend: setHeader,
       success: function(data){console.log('yeehaw2');},
@@ -124,22 +124,12 @@ function getWeeklyStats(obj){
       // Request body
       data: "{}"
     }); //close stats = ajax
-
-
     function setHeader(xhr){
       xhr.setRequestHeader("Ocp-Apim-Subscription-Key","a2f7e42648ea4c67b18eb8cb195d3593");
     }
-
-    // $weeklyStats.done(function(data) {
-    //   console.log("success2");
-    //   console.log(data);
-    //   return data;
-    // })
-    // $weeklyStats.fail(function() {
-    //   console.log("error2");
-    // });
-  // return queryStats; //close for loop
 } //close getWeeklyStats
+
+
 
 function setUpGraphs(obj, graphLabel){
   $('#main').append(`<div class="row container graphCard">
@@ -151,8 +141,9 @@ function setUpGraphs(obj, graphLabel){
     var data1 = [];
       //     var data1 = [ { label: "label 1", data: d1, points: { symbol: "triangle", fillColor: "#058DC7" }, color: "#058DC7" },
       //     { label: "label 2", data: d2, points: { symbol: "square", fillColor: "#50B432" }, color: "#50B432" }];
+
     for (var idKey in obj){
-      //idKey should be nameKey
+      //idKey is really nameKey
       var data1Obj = {};
       data1Obj.label = idKey.toString();
       data1Obj.data = obj[idKey];
@@ -165,21 +156,7 @@ function setUpGraphs(obj, graphLabel){
       data1.push(data1Obj);
     }
 
-    console.log('data1- ', data1);
-
-    //need data1[i] = {graph formats, data = obj[idKey]}
-
-    // data1[i] = {
-    //   points: { symbol: "", fillColor: "" }
-    // };
-    // data1[i]['label'] = playerNameArr[i];
-    // data1[i]['color'] = colorArr[i];
-    // data1[i]['points']['fillcolor'] = colorArr[i];
-    // data1[i]['points']['symbol'] = symbolArr[i];
-    // data1[i]['data'] = dataSort;
-    //
     $.plot($(`#${graphLabel}`), data1, {
-
       xaxis: {
         min: 0,
         mode: "week",
@@ -213,59 +190,5 @@ function setUpGraphs(obj, graphLabel){
         backgroundOpacity: 0.6,
         container: $(`#legendDiv`)
       }
-
-
-      // xaxis: {
-      //   tickSize: 1,
-      //   tickLength: 0,
-      //   tickDecimals: 0,
-      //   axisLabel: "Week",
-      //   axisLabelUseCanvas: true,
-      //   axisLabelFontSizePixels: 12,
-      //   axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
-      //   axisLabelPadding: 5
-      // },
-      //   yaxis: {
-      //     //axisLabel: "Temperature (C)",
-      //     axisLabelUseCanvas: true,
-      //     axisLabelFontSizePixels: 12,
-      //     axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
-      //     axisLabelPadding: 5
-      //   },
-      //   series: {
-      //     points: {
-      //       radius: 3,
-      //       show: true,
-      //       fill: true
-      //     },
-      //   },
-      //   legend: {
-      //     show: true,
-      //     labelBoxBorderColor: "none",
-      //     position: "left",
-      //     container: '#legendHolder'
-      //   }
     }); //close $.plot
-
 } //close setUpGraphs
-
-//___________________scrapheap__________________
-// use below for select dropdown
-// $('select').material_select();
-
-// $('select').material_select();
-// $("select").empty().html(' ');
-// var value = "New value";
-// $("select").append(
-//   $("<option></option>").attr("value","RushingAttempts").text("Rushing Attempts")
-// );
-
-// Update the content clearing the caret
-// $("select").material_select('update');
-// $("select").closest('.input-field').children('span.caret').remove();
-// put below inside userField.html
-// <div class="input-field col s12">
-//   <select>
-//   </select>
-//   <label>Materialize Select</label>
-// </div>
