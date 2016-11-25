@@ -3,6 +3,9 @@
 var numPlayer;
 var playerObjID = {};
 var apiString = 'https://api.fantasydata.net/v3/nfl/stats/JSON/';
+var colorObj = {};
+var symbolObj = {};
+
 
 
 function setUpPlayerNames(){
@@ -138,15 +141,113 @@ function getWeeklyStats(obj){
   // return queryStats; //close for loop
 } //close getWeeklyStats
 
-function setUpGraphs(){
+function setUpGraphs(obj, graphLabel){
   $('#main').append(`<div class="row container graphCard">
-      <p class="graphLabel"></p>
-      <img id="graphImg" src="images/nfl.jpg">
+      <p class="graphLabelP">${graphLabel}</p>
+      <div class="graphImg" id="${graphLabel}"></div>
     </div>
     <br>
     `);
+    var data1 = [];
+      //     var data1 = [ { label: "label 1", data: d1, points: { symbol: "triangle", fillColor: "#058DC7" }, color: "#058DC7" },
+      //     { label: "label 2", data: d2, points: { symbol: "square", fillColor: "#50B432" }, color: "#50B432" }];
+    for (var idKey in obj){
+      //idKey should be nameKey
+      var data1Obj = {};
+      data1Obj.label = idKey.toString();
+      data1Obj.data = obj[idKey];
+      data1Obj.lines = {show:true};
+      data1Obj.points = {
+        symbol: symbolObj[idKey],
+        fillColor: colorObj[idKey]
+      };
+      data1Obj.color = colorObj[idKey];
+      data1.push(data1Obj);
+    }
 
-}
+    console.log('data1- ', data1);
+
+    //need data1[i] = {graph formats, data = obj[idKey]}
+
+    // data1[i] = {
+    //   points: { symbol: "", fillColor: "" }
+    // };
+    // data1[i]['label'] = playerNameArr[i];
+    // data1[i]['color'] = colorArr[i];
+    // data1[i]['points']['fillcolor'] = colorArr[i];
+    // data1[i]['points']['symbol'] = symbolArr[i];
+    // data1[i]['data'] = dataSort;
+    //
+    $.plot($(`#${graphLabel}`), data1, {
+
+      xaxis: {
+        min: 0,
+        mode: "week",
+        tickSize: 1,
+        tickLength: 0, // Hide gridlines
+        axisLabel: "Week",
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
+        axisLabelPadding: 5
+      },
+      yaxes: [
+        {
+          min: 0,
+          axisLabel: `${graphLabel}`,
+          axisLabelUseCanvas: true,
+          axisLabelFontSizePixels: 12,
+          axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
+          axisLabelPadding: 5
+        }
+      ],
+      grid: {
+        hoverable: true,
+        borderWidth: 1
+      },
+      legend: {
+        labelBoxBorderColor: "none",
+        noColumns: 2,
+        position: "sw",
+        margin: 5,
+        backgroundOpacity: 0.6,
+        container: $(`#legendDiv`)
+      }
+
+
+      // xaxis: {
+      //   tickSize: 1,
+      //   tickLength: 0,
+      //   tickDecimals: 0,
+      //   axisLabel: "Week",
+      //   axisLabelUseCanvas: true,
+      //   axisLabelFontSizePixels: 12,
+      //   axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
+      //   axisLabelPadding: 5
+      // },
+      //   yaxis: {
+      //     //axisLabel: "Temperature (C)",
+      //     axisLabelUseCanvas: true,
+      //     axisLabelFontSizePixels: 12,
+      //     axisLabelFontFamily: "Verdana, Arial, Helvetica, Tahoma, sans-serif",
+      //     axisLabelPadding: 5
+      //   },
+      //   series: {
+      //     points: {
+      //       radius: 3,
+      //       show: true,
+      //       fill: true
+      //     },
+      //   },
+      //   legend: {
+      //     show: true,
+      //     labelBoxBorderColor: "none",
+      //     position: "left",
+      //     container: '#legendHolder'
+      //   }
+    }); //close $.plot
+
+} //close setUpGraphs
 
 //___________________scrapheap__________________
 // use below for select dropdown

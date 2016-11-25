@@ -6,6 +6,12 @@ $(document).ready(function(){
   var params = {};
   var nameArr = [];
   var IDArr = [];
+
+  var colorObj = {};
+  var symbolObj = {};
+  var colorArr = ['blue','orange','green','red','yellow','purple','blue','orange','green','red','yellow','purple'];
+  var symbolArr = ['triangle','square','circle','diamond','triangle','square','circle','diamond','triangle','square','circle','diamond'];
+
   var statArr = [];
   var apiString = 'https://api.fantasydata.net/v3/nfl/stats/JSON/';
   var flotObj = {};
@@ -34,6 +40,8 @@ $('#buttonDiv').on('click', '#submitPlayers', function(){
   //covert array names to ID's
   for(var i=0;i<nameArr.length;i++){
     IDArr[i] = playerObjID[nameArr[i]];
+    colorObj[nameArr[i]] = colorArr[i];
+    symbolObj[nameArr[i]] = symbolArr[i];
     }
   console.log('ids of names:', IDArr);
 
@@ -85,11 +93,18 @@ $('#buttonDiv').on('click', '#graphButton', function(){
     console.log('results- ', results);
     // results = [{weekStart/player1},{weekStart/player2}...,{weekEnd/player1}{weekEnd/player2}]
 
+    var heightCounter = 100;
+    $("#main").height(heightCounter);
+    $('#main').html(`<div class="row container">
+        <div class="col s6 offset-s3" id="legendDiv">
+        </div>
+      </div>
+      `);
 
     for (var i=0; i<statArr.length; i++){
       flotObj[statArr[i]] = {};
-      for (var j=0; j<IDArr.length; j++){
-        flotObj[statArr[i]][IDArr[j]] = [];
+      for (var j=0; j<nameArr.length; j++){
+        flotObj[statArr[i]][nameArr[j]] = [[0,0]];
       }
 
 
@@ -100,27 +115,24 @@ $('#buttonDiv').on('click', '#graphButton', function(){
           if(results[k] == ""){
             console.log('skipped');
           }
-          else if((results[k].PlayerID).toString() === key){
+          else if((results[k].Name) === key){
             flotObj[statArr[i]][key].push([results[k].Week, results[k][statArr[i]]]);
           }
 
         }
 
       } //close loop over results
+
+      // Set the container height
+      console.log('heightCounter- ', heightCounter);
+      heightCounter += (500);
+      $("#main").height(heightCounter);
+      setUpGraphs(flotObj[statArr[i]], statArr[i]);
+
     } //close loop over statArr
     console.log('flotObj- ', flotObj);
 
-    var heightCounter = 0;
-    $("#main").height(heightCounter);
 
-    $('#main').html(``);
-    for (let j=0; j<statArr.length; j++){
-      setUpGraphs();
-      heightCounter += (500);
-    }
-    // Set the container height
-    console.log('heightCounter- ', heightCounter);
-    $("#main").height(heightCounter);
 
   }); // Close promise.all
 
