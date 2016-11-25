@@ -1,7 +1,7 @@
 # qOneRefact
 
 
-[Surge Link](qonerefacttwo.surge.sh)
+Surge Link: qonerefacttwo.surge.sh
 
 ##Corrections Based on Comments
 * CSS Styling
