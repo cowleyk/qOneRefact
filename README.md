@@ -1,5 +1,8 @@
 # qOneRefact
 
+
+[Surge Link](qonerefacttwo.surge.sh)
+
 ##Corrections Based on Comments
 * CSS Styling
     - in style.css, the #tagLine styling and other elements have text properties defined
@@ -14,3 +17,7 @@
 * index.html indentation is improved, no h1,h2,h3... tags used for text styling
 
 * not sure index.html qualifies as 'Semantic HTML'.  Would love suggestions on where to improve.
+
+* will be sure to actually use stories and document evidence of an agile workflow on the next quarter project
+
+* flot-chart graphs are not 100% formatted, plan is to eventually switch to D3 generated graphs so I'm not putzing with them any further.
